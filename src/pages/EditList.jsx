@@ -25,7 +25,7 @@ export const EditList = () => {
         },
       })
       .then(() => {
-        navigate.push('/');
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`更新に失敗しました。 ${err}`);
@@ -40,19 +40,18 @@ export const EditList = () => {
         },
       })
       .then(() => {
-        navigate.push('/');
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`削除に失敗しました。${err}`);
       });
   };
 
-  /* eslint-disable */
   useEffect(() => {
     axios
       .get(`${url}/lists/${listId}`, {
         headers: {
-          authorization: `Bearer ${cookies.token}`, 
+          authorization: `Bearer ${cookies.token}`,
         },
       })
       .then((res) => {
@@ -63,7 +62,6 @@ export const EditList = () => {
         setErrorMessage(`リスト情報の取得に失敗しました。${err}`);
       });
   }, []);
-  /* eslint-disable */
 
   return (
     <div>

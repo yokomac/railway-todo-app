@@ -33,7 +33,7 @@ export const EditTask = () => {
       })
       .then((res) => {
         console.log(res.data);
-        navigate.push('/');
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`更新に失敗しました。${err}`);
@@ -48,14 +48,13 @@ export const EditTask = () => {
         },
       })
       .then(() => {
-        navigate.push('/');
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`削除に失敗しました。${err}`);
       });
   };
 
-  /* eslint-disable */
   useEffect(() => {
     axios
       .get(`${url}/lists/${listId}/tasks/${taskId}`, {
@@ -73,7 +72,6 @@ export const EditTask = () => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
   }, []);
-  /* eslint-disable */
 
   return (
     <div>

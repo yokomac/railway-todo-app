@@ -16,7 +16,7 @@ export const SignUp = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessge] = useState();
-  const [cookies, setCookie, removeCookie] = useCookies(); // eslint-disable-line no-unused-vars
+  const [setCookie] = useCookies();
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleNameChange = (e) => setName(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -41,6 +41,7 @@ export const SignUp = () => {
 
     if (auth) return <Navigate replace to="/" />;
   };
+
   return (
     <div>
       <Header />

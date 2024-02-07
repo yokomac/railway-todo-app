@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Header } from '../components/Header';
 import { url } from '../const';
@@ -15,7 +16,6 @@ export const Home = () => {
   const [cookies] = useCookies();
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
 
-  /* eslint-disable */
   useEffect(() => {
     axios
       .get(`${url}/lists`, {
@@ -30,9 +30,7 @@ export const Home = () => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
   }, []);
-  /* eslint-disable */
-  
-  /* eslint-disable */
+
   useEffect(() => {
     const listId = lists[0]?.id;
     if (typeof listId !== 'undefined') {
@@ -51,7 +49,6 @@ export const Home = () => {
         });
     }
   }, [lists]);
-  /* eslint-disable */
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -121,7 +118,7 @@ export const Home = () => {
 // 表示するタスク
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
-  if (tasks === null) return <></>;
+  if (!tasks === null) return <></>;
 
   if (isDoneDisplay == 'done') {
     return (
@@ -160,4 +157,10 @@ const Tasks = (props) => {
         ))}
     </ul>
   );
+};
+
+Tasks.propTypes = {
+  tasks: PropTypes.array,
+  selectListId: PropTypes.string,
+  isDoneDisplay: PropTypes.string.isRequired,
 };

@@ -8,7 +8,7 @@ export const Header = () => {
   const auth = useSelector((state) => state.auth.isSignIn);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [cookies, setCookie, removeCookie] = useCookies(); // eslint-disable-line no-unused-vars
+  const [removeCookie] = useCookies();
 
   const handleSignOut = () => {
     dispatch(signOut());

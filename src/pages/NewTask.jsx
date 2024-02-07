@@ -16,7 +16,7 @@ export const NewTask = () => {
   const navigate = useNavigate();
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
-  const handleSelectList = (id) => setSelectListId(id);
+  const handleSelectList = (id) => setSelectListId(Number(id));
   const onCreateTask = () => {
     const data = {
       title: title,
@@ -31,14 +31,13 @@ export const NewTask = () => {
         },
       })
       .then(() => {
-        navigate.push('/');
+        navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`タスクの作成に失敗しました。${err}`);
       });
   };
 
-  /* eslint-disable */
   useEffect(() => {
     axios
       .get(`${url}/lists`, {
@@ -54,7 +53,6 @@ export const NewTask = () => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
   }, []);
-  /* eslint-disable */
 
   return (
     <div>
