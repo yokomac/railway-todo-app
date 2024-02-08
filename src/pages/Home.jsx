@@ -107,7 +107,7 @@ export const Home = () => {
                 <option value="done">完了</option>
               </select>
             </div>
-            <Tasks tasks={tasks} selectListId={selectListId} isDoneDisplay={isDoneDisplay} />
+            <Tasks tasks={tasks} selectListId={selectListId} isDoneDisplay={isDoneDisplay}/>
           </div>
         </div>
       </main>
@@ -118,9 +118,9 @@ export const Home = () => {
 // 表示するタスク
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
-  if (!tasks === null) return <></>;
+  if (tasks === null) return <></>;
 
-  if (isDoneDisplay == 'done') {
+  if (isDoneDisplay === 'done') {
     return (
       <ul>
         {tasks
@@ -130,7 +130,7 @@ const Tasks = (props) => {
           .map((task, key) => (
             <li key={key} className="task-item">
               <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-                {task.title}
+                {task.title} {task.limit}
                 <br />
                 {task.done ? '完了' : '未完了'}
               </Link>
@@ -149,7 +149,7 @@ const Tasks = (props) => {
         .map((task, key) => (
           <li key={key} className="task-item">
             <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-              {task.title}
+              {task.title} {task.limit}
               <br />
               {task.done ? '完了' : '未完了'}
             </Link>

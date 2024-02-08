@@ -4,25 +4,42 @@ import axios from 'axios';
 import { url } from '../const';
 import { Header } from '../components/Header';
 import './newTask.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; //追加
 
 export const NewTask = () => {
   const [selectListId, setSelectListId] = useState();
   const [lists, setLists] = useState([]);
   const [title, setTitle] = useState('');
+  const [limit, setLimit] = useState(''); // 新しいローカルステート
   const [detail, setDetail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [cookies] = useCookies();
   const navigate = useNavigate();
+
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(Number(id));
+  // limitステートを更新するためのハンドラを追加
+  // handleLimitChange関数を更新して、limitステートをフォーマットする
+  const handleLimitChange = (e) => {
+    const selectedDateTime = e.target.value;
+    const formattedDateTime = new Date(selectedDateTime.replace('T', ' ')).toISOString();
+    setLimit(formattedDateTime);
+  };
+  
+
   const onCreateTask = () => {
     const data = {
       title: title,
+      limit: limit, // ローカルステートを使用する
       detail: detail,
       done: false,
     };
+
+    if (!limit) { // 期限日時が空の場合はエラーメッセージを設定
+      setErrorMessage('期限日時は必須です。');
+      return;
+    }
 
     axios
       .post(`${url}/lists/${selectListId}/tasks`, data, {
@@ -31,7 +48,8 @@ export const NewTask = () => {
         },
       })
       .then(() => {
-        navigate('/');
+        // タスクの作成が成功したら、Home ページに遷移
+       navigate('/');
       })
       .catch((err) => {
         setErrorMessage(`タスクの作成に失敗しました。${err}`);
@@ -52,7 +70,7 @@ export const NewTask = () => {
       .catch((err) => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [cookies.token]);
 
   return (
     <div>
@@ -74,6 +92,10 @@ export const NewTask = () => {
           <label>タイトル</label>
           <br />
           <input type="text" onChange={handleTitleChange} className="new-task-title" />
+          <br />
+          <label>期日</label>
+          <br />
+          <input type="datetime-local" id="timezone" name="timezone" value="+09:00" onChange={handleLimitChange} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />

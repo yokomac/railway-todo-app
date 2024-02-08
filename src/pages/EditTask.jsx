@@ -11,6 +11,7 @@ export const EditTask = () => {
   const { listId, taskId } = useParams();
   const [cookies] = useCookies();
   const [title, setTitle] = useState('');
+  const [limit, setLimit] = useState(''); // 期限のstateを追加
   const [detail, setDetail] = useState('');
   const [isDone, setIsDone] = useState();
   const [errorMessage, setErrorMessage] = useState('');
@@ -21,6 +22,7 @@ export const EditTask = () => {
     console.log(isDone);
     const data = {
       title: title,
+      limit: limit,
       detail: detail,
       done: isDone,
     };
@@ -65,6 +67,7 @@ export const EditTask = () => {
       .then((res) => {
         const task = res.data;
         setTitle(task.title);
+        setLimit(task.limit); // 期限のstateをセット
         setDetail(task.detail);
         setIsDone(task.done);
       })
@@ -83,6 +86,10 @@ export const EditTask = () => {
           <label>タイトル</label>
           <br />
           <input type="text" onChange={handleTitleChange} className="edit-task-title" value={title} />
+          <br />
+          <label>期日</label>
+          <br />
+          <input type="date" value={limit} onChange={(e) => setLimit(e.target.value)} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />
