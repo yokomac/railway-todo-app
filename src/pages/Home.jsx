@@ -105,10 +105,10 @@ export const Home = () => {
                   key={key}
                   className={`list-tab-item ${isActive ? 'active' : ''}`}
                   onClick={() => handleSelectList(list.id)}
-                  role="tab" // 各リストアイテムがタブであることを示す
+                  role="tab" // 各リストアイテムがタブであることを示す 不要？
                   tabIndex={0} // タブリスト内でフォーカスを受ける順序を設定
-                  aria-selected={isActive ? 'true' : 'false'} // アクティブなタブを示す
-                  aria-controls={`list-${key}`} // タブが関連するパネルのID
+                  aria-selected={isActive ? 'true' : 'false'} // アクティブなタブを示す 不要？
+                  aria-controls={`list-${key}`} // タブが関連するパネルのID 不要？
                 >
                   {list.title}
                 </li>
