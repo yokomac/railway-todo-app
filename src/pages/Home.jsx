@@ -66,6 +66,15 @@ export const Home = () => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
   };
+
+  const handleKeyDown = (e, id) => {
+    if (e.key === 'ArrowLeft' && id > 0) {
+      handleSelectList(lists[id - 1].id);
+    } else if (e.key === 'ArrowRight' && id < lists.length - 1) {
+      handleSelectList(lists[id + 1].id);
+    }
+  };
+  
   return (
     <div>
       <Header />
@@ -83,7 +92,12 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <ul className="list-tab">
+          <ul 
+            className="list-tab"
+            role="tablist" // リストがタブリストであることを示す
+            aria-label="リスト一覧" // タブリストのラベル
+            onKeyDown={(e) => handleKeyDown(e, lists.findIndex((list) => list.id === selectListId))}
+          >
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
@@ -91,6 +105,10 @@ export const Home = () => {
                   key={key}
                   className={`list-tab-item ${isActive ? 'active' : ''}`}
                   onClick={() => handleSelectList(list.id)}
+                  role="tab" // 各リストアイテムがタブであることを示す
+                  tabIndex={0} // タブリスト内でフォーカスを受ける順序を設定
+                  aria-selected={isActive ? 'true' : 'false'} // アクティブなタブを示す
+                  aria-controls={`list-${key}`} // タブが関連するパネルのID
                 >
                   {list.title}
                 </li>
@@ -108,7 +126,12 @@ export const Home = () => {
                 <option value="done">完了</option>
               </select>
             </div>
-            <Tasks tasks={tasks} selectListId={selectListId} isDoneDisplay={isDoneDisplay}/>
+            <Tasks 
+              tasks={tasks}
+              selectListId={selectListId}
+              isDoneDisplay={isDoneDisplay}
+              aria-labelledby="displaySelect" // 選択中のタブと関連付ける
+            />
           </div>
         </div>
       </main>
