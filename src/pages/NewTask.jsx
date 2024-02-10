@@ -19,22 +19,17 @@ export const NewTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
-  //const [formattedDateTime, setFormattedDateTime] = useState('');
-  // limitステートを更新するためのハンドラを追加
-  const handleLimitChange = (e) => setLimit(e.target.value);
-  /*
-  const getCurrentFormattedDate = () => {
-    const currentDate = Date();
-    const year = currentDate.getUTCFullYear();
-    const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getUTCDate()).padStart(2, '0');
-    const hours = String(currentDate.getUTCHours()).padStart(2, '0');
-    const minutes = String(currentDate.getUTCMinutes()).padStart(2, '0');
+  const handleLimitChange = (e) => {
+    const selectedDateTime = e.target.value;
+    
+    // 入力された日時をDateオブジェクトに変換
+    const dateObject = new Date(selectedDateTime);
 
-    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-    return formattedDate;
+    // フォーマットを調整（ISO 8601形式に一致させる）
+    const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z';
+
+    setLimit(formattedDateTime);
   };
-  */
 
   const onCreateTask = () => {
     const data = {
@@ -109,7 +104,7 @@ export const NewTask = () => {
           <br />
           <label>期日</label>
           <br />
-          <input type="datetime" name="datetime" onChange={handleLimitChange} className="new-task-title" />
+          <input type="datetime-local" onChange={handleLimitChange} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />
