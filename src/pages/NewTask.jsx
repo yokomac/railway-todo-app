@@ -18,15 +18,23 @@ export const NewTask = () => {
 
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
-  const handleSelectList = (id) => setSelectListId(Number(id));
+  const handleSelectList = (id) => setSelectListId(id);
+  //const [formattedDateTime, setFormattedDateTime] = useState('');
   // limitステートを更新するためのハンドラを追加
-  // handleLimitChange関数を更新して、limitステートをフォーマットする
-  const handleLimitChange = (e) => {
-    const selectedDateTime = e.target.value;
-    const formattedDateTime = new Date(selectedDateTime.replace('T', ' ')).toISOString();
-    setLimit(formattedDateTime);
+  const handleLimitChange = (e) => setLimit(e.target.value);
+  /*
+  const getCurrentFormattedDate = () => {
+    const currentDate = Date();
+    const year = currentDate.getUTCFullYear();
+    const month = String(currentDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getUTCDate()).padStart(2, '0');
+    const hours = String(currentDate.getUTCHours()).padStart(2, '0');
+    const minutes = String(currentDate.getUTCMinutes()).padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+    return formattedDate;
   };
-  
+  */
 
   const onCreateTask = () => {
     const data = {
@@ -70,8 +78,14 @@ export const NewTask = () => {
       .catch((err) => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
-  }, [cookies.token]);
-
+  }, []);
+  /*
+  const getCurrentFormattedDate = () => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().split('.')[0] + 'Z';
+    return formattedDate;
+  };
+  */
   return (
     <div>
       <Header />
@@ -95,7 +109,7 @@ export const NewTask = () => {
           <br />
           <label>期日</label>
           <br />
-          <input type="datetime-local" id="timezone" name="timezone" value="+09:00" onChange={handleLimitChange} className="new-task-title" />
+          <input type="datetime" name="datetime" onChange={handleLimitChange} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />
