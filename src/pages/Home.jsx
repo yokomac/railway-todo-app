@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Header } from '../components/Header';
 import { url } from '../const';
 import './home.scss';
+import { calculateRemainingTime } from '../remainingTimeUtils'; // 追加
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState('todo'); // todo->未完了 done->完了
@@ -118,6 +119,7 @@ export const Home = () => {
 // 表示するタスク
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
+
   if (tasks === null) return <></>;
 
   if (isDoneDisplay === 'done') {
@@ -130,9 +132,10 @@ const Tasks = (props) => {
           .map((task, key) => (
             <li key={key} className="task-item">
               <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-                {task.title} {task.limit}
+                {task.title} {task.limit} 
                 <br />
                 {task.done ? '完了' : '未完了'}
+                {<RemainingTime limit={task.limit} />}
               </Link>
             </li>
           ))}
@@ -152,6 +155,8 @@ const Tasks = (props) => {
               {task.title} {task.limit}
               <br />
               {task.done ? '完了' : '未完了'}
+              <br />
+              {<RemainingTime limit={task.limit} />}
             </Link>
           </li>
         ))}
@@ -163,4 +168,35 @@ Tasks.propTypes = {
   tasks: PropTypes.array,
   selectListId: PropTypes.string,
   isDoneDisplay: PropTypes.string.isRequired,
+};
+
+// 残り時間を表示するコンポーネント
+const RemainingTime = (props) => {
+  const { limit } = props;
+  const [remainingTime, setRemainingTime] = useState({});
+
+  useEffect(() => {
+    // 初回の計算
+    const initialRemainingTime = calculateRemainingTime(limit);
+    setRemainingTime(initialRemainingTime);
+
+    // 1分ごとに更新
+    const intervalId = setInterval(() => {
+      const remainingTime = calculateRemainingTime(limit);
+      setRemainingTime(remainingTime);
+    }, 60000); 
+
+    // コンポーネントがアンマウントされるときにクリーンアップ
+    return () => clearInterval(intervalId);
+  }, [limit]);
+
+  return (
+    <p className="remaining-time">
+      残り時間: {`${remainingTime.days}日 ${remainingTime.hours}時間 ${remainingTime.minutes}分`}
+    </p>
+  );
+};
+
+RemainingTime.propTypes = {
+  limit: PropTypes.string.isRequired,
 };

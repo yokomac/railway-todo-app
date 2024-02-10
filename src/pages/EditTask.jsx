@@ -18,6 +18,14 @@ export const EditTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
+  const handleLimitChange = (e) => {
+    const selectedDateTime = e.target.value;
+    // 入力された日時をDateオブジェクトに変換
+    const dateObject = new Date(selectedDateTime);
+    // フォーマットを調整（ISO 8601形式に一致させる）
+    const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z';
+    setLimit(formattedDateTime);
+  };
   const onUpdateTask = () => {
     console.log(isDone);
     const data = {
@@ -89,7 +97,7 @@ export const EditTask = () => {
           <br />
           <label>期日</label>
           <br />
-          <input type="date" value={limit} onChange={(e) => setLimit(e.target.value)} className="new-task-title" />
+          <input type="datetime-local" onChange={handleLimitChange} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />

@@ -21,13 +21,10 @@ export const NewTask = () => {
   const handleSelectList = (id) => setSelectListId(id);
   const handleLimitChange = (e) => {
     const selectedDateTime = e.target.value;
-    
     // 入力された日時をDateオブジェクトに変換
     const dateObject = new Date(selectedDateTime);
-
     // フォーマットを調整（ISO 8601形式に一致させる）
     const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z';
-
     setLimit(formattedDateTime);
   };
 
@@ -74,13 +71,7 @@ export const NewTask = () => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
   }, []);
-  /*
-  const getCurrentFormattedDate = () => {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toISOString().split('.')[0] + 'Z';
-    return formattedDate;
-  };
-  */
+
   return (
     <div>
       <Header />
