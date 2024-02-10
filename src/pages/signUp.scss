@@ -3,6 +3,14 @@
 .signup {
   width: 500px;
   margin: 0 auto;
+  @media (min-width: 768px) and (max-width: 1024px){
+    margin: 30px auto;
+    width: 95%;
+  }
+  @media (max-width: 768px) {
+    margin: 20px auto;
+    width: 90%;
+  }
 }
 .signup-form {
   margin: 25px 0;
@@ -16,6 +24,12 @@
   font-size: large;
   height: 30px;
   margin-bottom: 25px;
+  @media (min-width: 768px) and (max-width: 1024px){
+    width: 90%;
+  }
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 }
 
 .signup-button {

@@ -157,6 +157,8 @@ const Tasks = (props) => {
               <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
                 {task.title} {task.limit} 
                 <br />
+                期限：{task.limit} 
+                <br />
                 {task.done ? '完了' : '未完了'}
                 {<RemainingTime limit={task.limit} />}
               </Link>
@@ -175,7 +177,9 @@ const Tasks = (props) => {
         .map((task, key) => (
           <li key={key} className="task-item">
             <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-              {task.title} {task.limit}
+              {task.title}
+              <br />
+              期限：{task.limit}
               <br />
               {task.done ? '完了' : '未完了'}
               <br />
@@ -215,7 +219,7 @@ const RemainingTime = (props) => {
 
   return (
     <p className="remaining-time">
-      残り時間: {`${remainingTime.days}日 ${remainingTime.hours}時間 ${remainingTime.minutes}分`}
+      残り時間： {`${remainingTime.days}日 ${remainingTime.hours}時間 ${remainingTime.minutes}分`}
     </p>
   );
 };
