@@ -19,24 +19,20 @@ export const NewTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
-  const handleLimitChange = (e) => {
-    const selectedDateTime = e.target.value;
-    // 入力された日時をDateオブジェクトに変換
-    const dateObject = new Date(selectedDateTime);
-    // フォーマットを調整（ISO 8601形式に一致させる）
-    const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z';
-    setLimit(formattedDateTime);
-  };
+  const handleLimitChange = (e) => setLimit(e.target.value);
 
   const onCreateTask = () => {
+    // 送信時にフォーマットを整える
+    const formattedDateTime = limit ? new Date(limit).toISOString() : '';
+    
     const data = {
       title: title,
-      limit: limit, // ローカルステートを使用する
+      limit: formattedDateTime,
       detail: detail,
       done: false,
     };
 
-    if (!limit) { // 期限日時が空の場合はエラーメッセージを設定
+    if (!formattedDateTime) {
       setErrorMessage('期限日時は必須です。');
       return;
     }
