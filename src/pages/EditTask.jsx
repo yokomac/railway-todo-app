@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { url } from '../const';
 import { useNavigate, useParams } from 'react-router-dom';
 import './editTask.scss';
+import { useLocation } from 'react-router-dom';
 
 export const EditTask = () => {
   const navigate = useNavigate();
@@ -18,19 +19,17 @@ export const EditTask = () => {
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
-  const handleLimitChange = (e) => {
-    const selectedDateTime = e.target.value;
-    // 入力された日時をDateオブジェクトに変換
-    const dateObject = new Date(selectedDateTime);
-    // フォーマットを調整（ISO 8601形式に一致させる）
-    const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z';
-    setLimit(formattedDateTime);
-  };
+  const handleLimitChange = (e) => setLimit(e.target.value); // 追加
+  const location = useLocation();
+  const limitFromHome = location.state?.deadline || '';
+  
   const onUpdateTask = () => {
+    // 送信時にフォーマットを整える
+    const formattedDateTime = limit ? new Date(limit).toISOString() : '';
     console.log(isDone);
     const data = {
       title: title,
-      limit: limit,
+      limit: formattedDateTime,
       detail: detail,
       done: isDone,
     };
@@ -75,14 +74,14 @@ export const EditTask = () => {
       .then((res) => {
         const task = res.data;
         setTitle(task.title);
-        setLimit(task.limit); // 期限のstateをセット
+        setLimit(task.limit || limitFromHome); // 期限のstateをセット
         setDetail(task.detail);
         setIsDone(task.done);
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [limitFromHome]);
 
   return (
     <div>
@@ -97,7 +96,7 @@ export const EditTask = () => {
           <br />
           <label>期日</label>
           <br />
-          <input type="datetime-local" onChange={handleLimitChange} className="new-task-title" />
+          <input type="datetime-local" value={limit} onChange={handleLimitChange} className="new-task-title" />
           <br />
           <label>詳細</label>
           <br />

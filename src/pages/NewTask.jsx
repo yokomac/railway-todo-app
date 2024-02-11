@@ -24,13 +24,21 @@ export const NewTask = () => {
   const onCreateTask = () => {
     // 送信時にフォーマットを整える
     const formattedDateTime = limit ? new Date(limit).toISOString() : '';
-    
     const data = {
       title: title,
       limit: formattedDateTime,
       detail: detail,
       done: false,
     };
+
+    /*
+    const handleLimitChange = (e) => {
+    const selectedDateTime = e.target.value;
+    const dateObject = new Date(selectedDateTime); // 入力された日時をDateオブジェクトに変換
+    const formattedDateTime = dateObject.toISOString().split('.')[0] + 'Z'; // フォーマットを調整（ISO 8601形式に一致させる）
+    setLimit(formattedDateTime);
+    };
+    */
 
     if (!formattedDateTime) {
       setErrorMessage('期限日時は必須です。');
