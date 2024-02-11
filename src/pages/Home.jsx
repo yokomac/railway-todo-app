@@ -95,10 +95,7 @@ export const Home = () => {
             .map((task, key) => (
               <li key={key} className="task-item">
                 <Link 
-                  to={{
-                    pathname: `/lists/${selectListId}/tasks/${task.id}`,
-                    state: { deadline: task.limit },
-                  }}
+                  to={`/lists/${selectListId}/tasks/${task.id}`}
                   className="task-item-link"
                 >
                   {task.title}
@@ -241,7 +238,6 @@ export const Home = () => {
               selectListId={selectListId}
               isDoneDisplay={isDoneDisplay}
               aria-labelledby="displaySelect" // 選択中のタブと関連付ける
-              initialLimit={tasks.length > 0 ? tasks[0].limit : ''} // 追加
             />
           </div>
         </div>

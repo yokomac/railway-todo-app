@@ -5,7 +5,6 @@ import { useCookies } from 'react-cookie';
 import { url } from '../const';
 import { useNavigate, useParams } from 'react-router-dom';
 import './editTask.scss';
-import { useLocation } from 'react-router-dom';
 
 export const EditTask = () => {
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ export const EditTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const handleLimitChange = (e) => setLimit(e.target.value); // 追加
-  const location = useLocation();
   const limitFromHome = location.state?.deadline || '';
   
   const onUpdateTask = () => {
@@ -63,7 +61,8 @@ export const EditTask = () => {
         setErrorMessage(`削除に失敗しました。${err}`);
       });
   };
-
+  
+  // APIから期限の取得
   useEffect(() => {
     axios
       .get(`${url}/lists/${listId}/tasks/${taskId}`, {
@@ -74,7 +73,14 @@ export const EditTask = () => {
       .then((res) => {
         const task = res.data;
         setTitle(task.title);
-        setLimit(task.limit || limitFromHome); // 期限のstateをセット
+        // 期日の初期値をJSTに変換して設定
+        if (task.limit) {
+          const jstDate = new Date(task.limit);
+          jstDate.setHours(jstDate.getHours() + 9); // UTCからJSTに変換
+          setLimit(jstDate.toISOString().slice(0, 16));
+        } else {
+          setLimit(limitFromHome);
+        }
         setDetail(task.detail);
         setIsDone(task.done);
       })
@@ -82,6 +88,7 @@ export const EditTask = () => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
   }, [limitFromHome]);
+
 
   return (
     <div>
