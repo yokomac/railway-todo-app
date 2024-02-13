@@ -60,7 +60,9 @@ export const EditTask = () => {
         setErrorMessage(`削除に失敗しました。${err}`);
       });
   };
+
   
+    
   // APIから期限の取得
   useEffect(() => {
     axios
@@ -72,12 +74,16 @@ export const EditTask = () => {
       .then((res) => {
         const task = res.data;
         setTitle(task.title);
-        // 期日の初期値をJSTに変換して設定
-        if (task.limit) {
-          const jstDate = new Date(task.limit);
-          jstDate.setHours(jstDate.getHours() + 9); // UTCからJSTに変換
-          setLimit(jstDate.toISOString().slice(0, 16));
-        }
+
+        // タイムゾーンの差を考慮して初期値にセット
+        const localLimit = task.limit ? new Date(task.limit) : null;
+
+        // フォーマットを "yyyy-MM-ddThh:mm" に変換
+        const formattedLocalLimit = localLimit
+        ? `${localLimit.getFullYear()}-${String(localLimit.getMonth() + 1).padStart(2, '0')}-${String(localLimit.getDate()).padStart(2, '0')}T${String(localLimit.getHours()).padStart(2, '0')}:${String(localLimit.getMinutes()).padStart(2, '0')}`
+        : '';
+
+        setLimit(formattedLocalLimit);
         setDetail(task.detail);
         setIsDone(task.done);
       })
@@ -85,6 +91,7 @@ export const EditTask = () => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
   }, []);
+
 
 
   return (
