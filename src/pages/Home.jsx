@@ -8,10 +8,10 @@ import { url } from '../const';
 import './home.scss';
 import { calculateRemainingTime } from '../remainingTimeUtils'; // 追加
 
-// 時間を日本語形式にフォーマットする関数
-const displayJapaneseTime = (time) => {
+// 時間をJSTにフォーマットする関数
+const displayJapaneseTime = (limit) => {
   const options = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-  return new Date(time).toLocaleString('ja-JP', options);
+  return new Date(limit).toLocaleString('ja-JP', options);
 };
 
 export const Home = () => {

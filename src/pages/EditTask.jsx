@@ -19,7 +19,6 @@ export const EditTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const handleLimitChange = (e) => setLimit(e.target.value); // 追加
-  const limitFromHome = location.state?.deadline || '';
   
   const onUpdateTask = () => {
     // 送信時にフォーマットを整える
@@ -78,8 +77,6 @@ export const EditTask = () => {
           const jstDate = new Date(task.limit);
           jstDate.setHours(jstDate.getHours() + 9); // UTCからJSTに変換
           setLimit(jstDate.toISOString().slice(0, 16));
-        } else {
-          setLimit(limitFromHome);
         }
         setDetail(task.detail);
         setIsDone(task.done);
@@ -87,7 +84,7 @@ export const EditTask = () => {
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
       });
-  }, [limitFromHome]);
+  }, []);
 
 
   return (
